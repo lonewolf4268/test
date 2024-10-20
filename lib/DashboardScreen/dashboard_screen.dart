@@ -16,6 +16,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   String? _token;
   bool _isVerified = false;
   DateTime? _lastBackPressed;
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -75,7 +76,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
-
   Future<bool> _onWillPop() async {
     if (_lastBackPressed == null ||
         DateTime.now().difference(_lastBackPressed!) > Duration(seconds: 2)) {
@@ -86,6 +86,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
       return false;
     }
     return true;
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+      // Navigate to DashboardScreen when home is pressed
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DashboardScreen(),
+          ),
+        );
+        break;
+      case 1:
+      // Navigate to ShopNowScreen when shopping cart is pressed
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ShopNowScreen(),
+          ),
+        );
+        break;
+    // Add other cases for notifications and profile if needed
+    }
   }
 
   @override
@@ -284,7 +312,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           backgroundColor: Colors.white,
           selectedItemColor: Colors.purple,
           unselectedItemColor: Colors.black,
-          currentIndex: 0,
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
@@ -292,7 +321,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart),
-              label: 'Cart',
+              label: 'Shop',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.notifications),
@@ -307,45 +336,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
   }
-}
 
-Widget _buildHistoryItem({
-  required String orderId,
-  required String recipient,
-  required String status,
-  required String details,
-}) {
-  return Card(
-    elevation: 2,
-    child: Container(
-      padding: EdgeInsets.all(15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            orderId,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 5),
-          Text('Recipient: $recipient'),
-          SizedBox(height: 5),
-          Text(details),
-          SizedBox(height: 10),
-          Align(
-            alignment: Alignment.centerRight,
-            child: ElevatedButton(
-              onPressed: () {}, // Implement action for completed status
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                textStyle: TextStyle(color: Colors.white),
-              ),
-              child: Text(status),
-            ),
-          ),
-        ],
+  Widget _buildHistoryItem({
+    required String orderId,
+    required String recipient,
+    required String status,
+    required String details,
+  }) {
+    return Card(
+      elevation: 2,
+      child: ListTile(
+        title: Text('Order ID: $orderId'),
+        subtitle: Text(details),
+        trailing: Text(status),
+        onTap: () {
+          // Handle history item tap if needed
+        },
       ),
-    ),
-  );
+    );
+  }
 }
-

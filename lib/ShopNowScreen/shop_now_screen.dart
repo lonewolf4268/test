@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../DashboardScreen/dashboard_screen.dart';
+
 class ShopNowScreen extends StatefulWidget {
   const ShopNowScreen({Key? key}) : super(key: key);
 
@@ -14,7 +16,11 @@ class _ShopNowScreenState extends State<ShopNowScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context); // Navigate back to previous screen
+            // Navigate back to the DashboardScreen
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => DashboardScreen()),
+            );
           },
           icon: Icon(Icons.arrow_back_ios),
         ),
@@ -141,6 +147,9 @@ class _ShopNowScreenState extends State<ShopNowScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
+        selectedItemColor: Colors.purple,
+        unselectedItemColor: Colors.black,
         currentIndex: 1, // Set the initial selected item
         items: [
           BottomNavigationBarItem(
@@ -161,8 +170,21 @@ class _ShopNowScreenState extends State<ShopNowScreen> {
           ),
         ],
         onTap: (index) {
-          // Handle navigation to different screens based on the selected index
-          print('Bottom Navigation Bar Item $index tapped.');
+          switch (index) {
+            case 0:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => DashboardScreen()),
+              );
+              break;
+            case 1:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => ShopNowScreen()),
+              );
+              break;
+          // Add navigation for Notifications and Profile if needed
+          }
         },
       ),
     );
