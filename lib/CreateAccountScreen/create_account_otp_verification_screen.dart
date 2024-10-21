@@ -326,9 +326,16 @@ class _CreateAccountOTPVerificationScreenState
 
   // Method for creating OTP input fields
   Widget _buildOTPInput(int index) {
+    // Get the screen width
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    // Calculate the width of each OTP input box based on screen width and number of boxes
+    // Assuming 4 boxes, subtract some padding or spacing
+    final boxWidth = (screenWidth - 40) / 4; // Adjust padding as needed
+
     return Container(
-      width: 100, // Setting width to 70
-      height: 100, // Setting height to 70
+      width: boxWidth, // Use dynamic width
+      height: boxWidth, // Set height same as width for a square box
       child: TextFormField(
         autofocus: true,
         textAlign: TextAlign.center,
@@ -339,20 +346,16 @@ class _CreateAccountOTPVerificationScreenState
           if (value.length == 1) {
             if (index == 0) {
               _otp = value;
-            } else if (index == 1) {
-              _otp = _otp! + value;
-            } else if (index == 2) {
-              _otp = _otp! + value;
-            } else if (index == 3) {
+            } else {
               _otp = _otp! + value;
             }
-            FocusScope.of(context).nextFocus();
+            FocusScope.of(context).nextFocus(); // Move to the next input
           } else {
-            FocusScope.of(context).previousFocus();
+            FocusScope.of(context).previousFocus(); // Move to the previous input
           }
         },
         decoration: InputDecoration(
-          counterText: '',
+          counterText: '', // Hide character counter
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.grey),
             borderRadius: BorderRadius.circular(10),
